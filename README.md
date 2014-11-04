@@ -1,17 +1,16 @@
 # hellmoo tintin++ scripts
-This repository contains my tintin++ configuration for hellmoo
+This repository contains my **TinTin++** configuration for **hellmoo**.
+
+I use *TinTin++* in combination with *terminator*. The top pane in terminator displays the main game window and the bottom pane the corp chat.
 
 ## Features
 * seperate input line
 * display stats like HP, thirst, hunger, hornieness,.... in the first line
 * display currently available jobs in the second line
-* redirect corp chat to a seperate file# hellmoo tintin++ scripts
-This repository contains my **TinTin++** configuration for **hellmoo**.
-
-I use *TinTin++* in combination with *terminator*. The top pane in terminator displays the main game window and the bottom pane the corp chat.
+* redirect corp chat to a seperate file
 
 ## Prerequisits
-TinTin++ and terminator have to be installed.
+TinTin++ and terminator have to be installed. And of course you need credentials for the game.
 
 ## Features
 * seperate input line on bottom of the main game screen
