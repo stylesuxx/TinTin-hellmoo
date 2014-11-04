@@ -1,0 +1,4 @@
+#NOP Adjust your login details and corporation name;
+#var {user} {YOUR_USERNAME_HERE};
+#var {pass} {YOUR_PASSWORD_HERE};
+#var {corp} {YOUR_CORP_HERE};

@@ -1,0 +1,248 @@
+#NOP initialize all variables;
+#var {health}  {N/A};
+#var {thirst}  {N/A};
+#var {hunger}  {N/A};
+#var {stress}  {N/A};
+#var {style}   {N/A};
+#var {tac}     {N/A};
+#var {horny}   {N/A};
+#var {credits} {N/A};
+#var {jobs}    {N/A};
+#var {time}    {N/A};
+#var {xp}      {N/A};
+
+#NOP gag corporate chat and log to a seperate file;
+#NOP This file may then be displayed by using "tail -f FILEPATH" for live updates;
+#gag {[ $corp ]};
+#action {[ $corp ]} {
+  #line log corp_chat.log;
+};
+
+#NOP Actions that should always be active;
+#action {little horny} {#var horny {little horny};}
+#action {You're horny} {#var horny {horny};}
+#action {You're really horny} {#var horny {really horny};}
+#action {You're extremely horny} {#var horny {extremely horny};}
+#action {GOD, you NEED it} {#var horny {FUCK};}
+#action {job again} {updateJobs};
+#action {you have to pee} {updateTac;};
+#action {bladder is empty} {updateTac};
+#action {bladder is relieved} {updateTac};
+#action {Mmmm.} {
+  updateStats;
+  updateTac;
+};
+#action {You feel pleasantly full.} {
+  updateStats;
+  updateTac;
+};
+
+#alias {updateTac} {
+  #CLASS {cUpdateTac} {open};
+    #gag {%* player %*};
+    #gag {%* npc %*};
+    #action {$user%* %*  [ %* ] %*} {
+      #var tac {%%4};
+      #replace {tac} {   } { };
+      #replace {tac} {  } { };
+      #replace {tac} {^ } {};
+      #replace {tac} { $} {};
+    };
+  #CLASS {cUpdateTac} {close};
+
+  tac;
+
+  #delay {1} {
+    #CLASS {cUpdateTac} {kill};
+  };
+}
+
+#alias {updateXP} {
+  #CLASS {cUpdateXP} {open};
+    #gag {%*xp %*};
+    #gag {Depends};
+    #gag {Mutations};
+    #gag {%* to spend};
+    #gag {%* available for gym};
+    #gag {brawn};
+    #gag {cool};
+    #gag {reflexes};
+    #gag {brains};
+    #gag {senses};
+    #gag {endurance};
+    #gag {col};
+    #gag {ref};
+    #gag {brn};
+    #gag {sen};
+    #gag {end};
+    #gag {fists};
+
+    #NOP gags that are needed because of strange line breaks;
+    #gag {amateur};
+    #gag {bombs};
+
+    #action {XP %* %* %*} {
+      #var {xp} {XP: %%2};
+    };
+  #CLASS {cUpdateXP} {close};
+
+  sc;
+
+  #delay {2} {
+    #CLASS {cUpdateXP} {kill};
+  };
+};
+
+#alias {updateStats} {
+  #CLASS {cUpdateStats} {open};
+    #var style {normal};
+    #var horny {not horny};
+    #gag {Health};
+    #gag {Thirst};
+    #gag {Hunger};
+    #gag {Stress};
+    #gag {You're};
+    #gag {You};
+    #gag {fighting style};
+    #gag {GOD, you NEED it};
+    #gag {reclone};
+    #action {Health %* %d/%d} {
+      #if {%%2 < 25}
+        {#var {health} {<819>%%2<879>/%%3};}
+        {#var {health} {%%2/%%3};}
+    };
+    #action {Thirst %* %d/%d} {
+      #if {%%2 >= 100}
+        {#var {thirst} {<819>%%2<879>/%%3}}
+        {#var {thirst} {%%2/%%3}}
+    };
+    #action {Hunger %* %d/%d} {
+      #if {%%2 >= 100}
+        {#var {hunger} {<819>%%2<879>/%%3}}
+        {#var {hunger} {%%2/%%3}}
+    };
+    #action {Stress %* %d/%d} {
+      #if {%%2 >= 100}
+        {#var {stress}
+        {<819>%%2<879>/%%3}} {#var {stress} {%%2/%%3}}
+    };
+    #action {Your credit chip shows %*} {
+      #var {credits} {%%1};
+      #replace {credits} {.} {}
+    };
+    #action {fighting style is '%*' } {
+      #var {style} {%%1}
+    };
+  #CLASS {cUpdateStats} {close};
+
+  st;
+
+  #delay {4} {
+    #CLASS {cUpdateStats} {kill};
+  };
+}
+
+#alias {updateJobs} {
+  #var jobs {--};
+  #CLASS {cUpdateJobs} {open};
+    #gag {Now};
+    #gag {--};
+    #gag {days};
+    #gag {day};
+    #gag {hrs};
+    #gag {hr};
+    #gag {mins};
+    #gag {Job};
+    #gag {completed};
+    #gag {<name>};
+    #gag {ails};
+    #gag {ls.};
+
+    #NOP gags that are needed because of strange line breaks;
+    #gag {shyster};
+
+    #NOP Parse jobs;
+    #action {%w %w %*  Now} {
+      #if {"$jobs" != "--"}
+       {#format {jobs} {%s, } {$jobs};}
+       {}
+      #if {"$jobs" == "--"}
+        {#var {jobs} {};}
+        {};
+      #if {"%%2" != ""}
+        {#format {jobs} {%s%s %s} {$jobs} {%%1} {%%2};}
+        {#format {jobs} {%s%s} {$jobs} {%%1};}
+    };
+  #CLASS {cUpdateJobs} {close};
+
+  jobs;
+
+  #delay {3} {
+    #CLASS {cUpdateJobs} {kill};
+  };
+};
+
+#alias {updateTime} {
+  #CLASS {cUpdateTime} {open};
+    #gag {You check your wristpad:};
+    #action {You check your wristpad: %* %S:%S:%S %*} {
+      #var {time} {%%2:%%3:%%4};
+    };
+  #CLASS {cUpdateTime} {close};
+
+  time;
+
+  #delay {1} {
+    #CLASS {cUpdateTime} {kill};
+  };
+};
+
+#NOP Draw the status bar;
+#alias {statusBar} {
+  #if {"$tac" == "" && "$tac" != "N/A"} {#var tac {<829>OK<879>}} {};
+  #FORMAT vStatusBar {<198>HP: %s TH: %s HU: %s ST: %s | %s | %s | %s | %s | %s | %s <079>}
+    {$health}
+    {$thirst}
+    {$hunger}
+    {$stress}
+    {$style}
+    {$tac}
+    {$horny}
+    {$credits}
+    {$xp}
+    {$time}
+  ;
+
+  #SHOWME {$vStatusBar} {-1};
+}
+
+#NOP Draw the job bar;
+#alias {jobBar} {
+  #FORMAT vJobBar {<198>Available jobs: %s <079> }
+    {$jobs}
+  ;
+
+  #SHOWME {$vJobBar} {-2};
+}
+
+#NOP Initially draw the status and job bar
+statusBar
+jobBar
+
+#NOP Initial update of all displayed stats
+updateTime;
+updateTac;
+updateXP;
+updateStats;
+updateJobs;
+
+#NOP Redraw the status and job bar every second;
+#ticker {statusBar} {statusBar} {1}
+#ticker {jobBar} {jobBar} {1}
+
+#NOP Update all stats at a given interval;
+#ticker {updateTime} {updateTime} {120};
+#ticker {updateTac} {updateTac} {120};
+#ticker {updateXP} {updateXP} {120};
+#ticker {updateStats} {updateStats} {120};
+#ticker {updateJobs} {updateJobs} {120};
