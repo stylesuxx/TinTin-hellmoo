@@ -11,13 +11,6 @@
 #var {time}    {N/A};
 #var {xp}      {N/A};
 
-#NOP gag corporate chat and log to a seperate file;
-#NOP This file may then be displayed by using "tail -f FILEPATH" for live updates;
-#gag {[ $corp ]};
-#action {[ $corp ]} {
-  #line log corp_chat.log;
-};
-
 #NOP Actions that should always be active;
 #action {little horny} {#var horny {little horny};}
 #action {You're horny} {#var horny {horny};}

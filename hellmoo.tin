@@ -38,6 +38,13 @@
 #NOP Read the preferences;
 #read preferences.tin
 
+#NOP gag corporate chat and log to a seperate file;
+#NOP This file may then be displayed by using "tail -f FILEPATH" for live updates;
+#gag {[ $corp ]};
+#action {[ $corp ]} {
+  #line log corp_chat.log;
+};
+
 #NOP Create a new session and connect;
 #ses hellmoo hellmoo.org 7777
 connect $user $pass
